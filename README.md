@@ -11,7 +11,7 @@ Para esto, se puede descargar homebrew y luego ejecutar:
  
 * Hay que instalar RabbitMQ
 https://www.rabbitmq.com/docs/install-homebrew <br>
-RabbitMQ da dos opciones al terminar de instalarlo:
+RabbitMQ da dos opciones al terminar de instalarlo:<br>
 Que se corra en segundo plano como servicio automáticamente con el comando:
 
 
