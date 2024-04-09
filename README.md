@@ -6,7 +6,7 @@ Para esto, se puede descargar homebrew y luego ejecutar:
 
 
   ```
-brew install erlang
+  brew install erlang
   ```
  
 * Hay que instalar RabbitMQ
@@ -16,7 +16,7 @@ Que se corra en segundo plano como servicio automáticamente con el comando:
 
 
   ```
-brew services start rabbitmq
+  brew services start rabbitmq
   ```
 
 Que lo corramos a mano con el comando:
