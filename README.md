@@ -12,14 +12,15 @@ Para esto, se puede descargar homebrew y luego ejecutar:
 * Hay que instalar RabbitMQ
 https://www.rabbitmq.com/docs/install-homebrew <br>
 RabbitMQ da dos opciones al terminar de instalarlo:<br>
-- Correrlo en segundo plano como servicio automáticamente con el comando:
+
+Correrlo en segundo plano como servicio automáticamente con el comando:
 
 
   ```
   brew services start rabbitmq
   ```
 
-- Correrlo a mano con el comando:
+Correrlo a mano con el comando:
 
   ```
 CONF_ENV_FILE="/usr/local/etc/rabbitmq/rabbitmq-env.conf" /usr/local/opt/rabbitmq/sbin/rabbitmq-server
