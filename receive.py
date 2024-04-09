@@ -10,22 +10,29 @@ def consume():
     connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', credentials=credentials))
     channel = connection.channel()
 
+# TODO hay que ver qué tiempo (miliseg) se le da en el parámetro x-message-ttl de las dos primeras colas, y la cantidad de reintentos en la segunda (x-delivery-limit)
+    # También podríamos añadirle un tiempo de vida más largo para los mensajes que caigan en dead-letter, podría haber algunas alertas o logs específicos por si se cae en esta cola
+# TODO ver si dejamos el auto_ack, si usamos el basic.nack (rechaza un mensaje y lo vuelve a poner en cola) o basic.ack (reconocimiento positivo, es un auto_ack manual)
+# TODO hay que ver la configuración del jmeter (X)
+
+
     channel.queue_declare(queue='main_queue', durable=True, arguments={
         "x-queue-type": "quorum",
-        'x-dead-letter-exchange': 'retry_exchange',
-        # Los mensajes rechazados en la cola principal se enviarán a la cola de reintentos, éste es el enrutamiento de los mensajes
+        'x-dead-letter-exchange': 'retry_exchange',# Los mensajes rechazados en la cola principal se enviarán a la cola de reintentos, éste es el enrutamiento de los mensajes
         'x-message-ttl': 10000,  # Tiempo de vida del mensaje en la cola principal
         'x-dead-letter-routing-key': 'retry_queue'
     })
 
     channel.queue_declare(queue='retry_queue', durable=True, arguments={
         "x-queue-type": "quorum",
-        'x-dead-letter-exchange': 'main_exchange',
-        # Para poder reintentar el procesamiento de los mensajes que hayan sido rechazados por la principal
+        'x-dead-letter-exchange': 'main_exchange', # Para poder reintentar el procesamiento de los mensajes que hayan sido rechazados por la principal
         'x-message-ttl': 10000,  # Tiempo de vida del mensaje en la cola de reintentos
-        'x-dead-letter-routing-key': 'dead_letter_queue',
-        # Si se alcanza la cantidad máxima de reintentos los mensajes quedarán en la cola de dead letter
-        'x-delivery-limit': 5  # Número máximo de reintentos de los mensajes en ésta cola
+        'x-dead-letter-routing-key': 'dead_letter_queue', # Si se alcanza la cantidad máxima de reintentos los mensajes quedarán en la cola de dead letter
+        'x-delivery-limit': 5  # Número máximo de reintentos de los mensajes en ésta cola, ver si puede quedar "infinito"
+    })
+
+    channel.queue_declare(queue='dead_letter_queue', durable=True, arguments={
+        "x-queue-type": "quorum"
     })
 
     channel.exchange_declare(exchange='main_exchange', exchange_type='direct')
