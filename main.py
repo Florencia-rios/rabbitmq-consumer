@@ -1,13 +1,15 @@
 import os
 import sys
 
-from receive import consume
-from send_producer_2 import send
+from queues_jobs_service.receive import consume_jobs_service
+from queues_nlp_worker.receive import consume_nlp_worker
+from queues_ocr_worker.receive import consume_ocr_worker
 
 if __name__ == '__main__':
     try:
-        consume()
-        send()
+        consume_jobs_service()
+        consume_nlp_worker()
+        consume_ocr_worker()
     except KeyboardInterrupt:
         print('Interrupted')
         try:

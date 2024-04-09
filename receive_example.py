@@ -5,7 +5,7 @@ import os
 def callback(ch, method, properties, body):
     print(f" [x] Received {body.decode()}")
 
-def consume():
+def consume_example():
     credentials = pika.PlainCredentials('flor-rabbit', 'flor1234')
     connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', credentials=credentials))
     channel = connection.channel()
@@ -56,7 +56,7 @@ def consume():
 
 if __name__ == '__main__':
     try:
-        consume()
+        consume_example()
     except KeyboardInterrupt:
         print('Interrupted')
         try:
